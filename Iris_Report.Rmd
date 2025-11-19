@@ -2,7 +2,9 @@
 title: "Iris Analysis Report"
 author: "DimitriMo"
 date: "2025-11-19"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -79,6 +81,10 @@ summary(anova_model)
 
 tukey_result <- TukeyHSD(anova_model)
 tukey_result
+# Ici, toutes les p-values ajustées = 0,
+# donc chaque paire d'espèces présente une différence significative
+# de longueur de sépales.
+
 
 # -------------------
 # Régression linéaire et plot ggplot2
@@ -96,6 +102,9 @@ ggplot(iris, aes(x = Petal.Length, y = Sepal.Length)) +
     y = "Sepal Length"
   ) +
   theme_minimal()
+
+#   - Coefficient positif et significatif : Sepal.Length augmente avec Petal.Length
+#   - R-squared = 0.76 : modèle explique 76% de la variance
 ```
 
 ## Conclusion
