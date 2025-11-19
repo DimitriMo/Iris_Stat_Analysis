@@ -1,0 +1,104 @@
+---
+title: "Iris Analysis Report"
+author: "DimitriMo"
+date: "2025-11-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Analyse du dataset Iris pour un mini projet Data Analyst.  
+Objectifs : 
+- Statistiques descriptives
+- Visualisations
+- Tests statistiques
+- Régression linéaire
+
+## Analyse et visualisations
+
+```{r iris_analysis, echo=TRUE}
+# -------------------
+# Charger le dataset
+# -------------------
+data(iris)
+
+# Aperçu
+head(iris)
+summary(iris)
+str(iris)
+
+# -------------------
+# Visualisations
+# -------------------
+
+# Histogramme
+hist(
+  iris$Sepal.Length,
+  main = "Distribution de Sepal Length",
+  xlab = "Sepal Length",
+  col = "lightblue",
+  border = "white"
+)
+
+# Boxplot
+boxplot(
+  Sepal.Length ~ Species,
+  data = iris,
+  main = "Sepal Length selon l'espèce",
+  xlab = "Espèce",
+  ylab = "Sepal Length",
+  col = c("lightblue", "lightgreen", "lightpink")
+)
+
+# Scatter plot
+plot(
+  iris$Sepal.Length,
+  iris$Petal.Length,
+  main = "Relation entre Sepal Length et Petal Length",
+  xlab = "Sepal Length",
+  ylab = "Petal Length",
+  pch = 19,
+  col = as.numeric(iris$Species)
+)
+legend(
+  "topleft",
+  legend = levels(iris$Species),
+  col = 1:3,
+  pch = 19
+)
+
+# -------------------
+# Test ANOVA et Tukey HSD
+# -------------------
+anova_model <- aov(Sepal.Length ~ Species, data = iris)
+summary(anova_model)
+
+tukey_result <- TukeyHSD(anova_model)
+tukey_result
+
+# -------------------
+# Régression linéaire et plot ggplot2
+# -------------------
+linear_model <- lm(Sepal.Length ~ Petal.Length, data = iris)
+summary(linear_model)
+
+library(ggplot2)
+ggplot(iris, aes(x = Petal.Length, y = Sepal.Length)) +
+  geom_point(aes(color = Species), size = 3) +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  labs(
+    title = "Régression linéaire : Sepal.Length en fonction de Petal.Length",
+    x = "Petal Length",
+    y = "Sepal Length"
+  ) +
+  theme_minimal()
+```
+
+## Conclusion
+
+- Les analyses montrent que **chaque espèce d’iris a des sépales de longueur moyenne différente**.  
+- La **régression linéaire** confirme que **Petal.Length est un bon prédicteur de Sepal.Length**.
